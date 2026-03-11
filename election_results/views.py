@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.db.models import Sum
-from .models import PollingUnit, AnnouncedPUResult, LGA
 from django.utils import timezone
-
+from .models import PollingUnit, AnnouncedPUResult, LGA, Party
 
 def pollingUnitResults(request):
-    polling_units = PollingUnit.objects.all()
+    polling_units = PollingUnit.objects.only("uniqueid", "polling_unit_name")
     parties = Party.objects.all()
     pu_id = request.GET.get("polling_unit")
 
@@ -67,24 +66,16 @@ def lgaResults(request):
     )
 
 
-from .models import PollingUnit, AnnouncedPUResult, Party
-
-
 def addResults(request):
-
-    polling_units = PollingUnit.objects.all()
+    polling_units = PollingUnit.objects.only("uniqueid", "polling_unit_name")
     parties = Party.objects.all()
-
     if request.method == "POST":
-
         pu = request.POST.get("polling_unit")
         polling_unit = PollingUnit.objects.get(uniqueid=pu)
         print(request.POST)
 
         for party in parties:
-
             score = request.POST.get(party.partyid)
-
             if score:
                 AnnouncedPUResult.objects.create(
                     polling_unit=polling_unit,

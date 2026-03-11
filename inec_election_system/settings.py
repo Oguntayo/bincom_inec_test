@@ -86,6 +86,11 @@ DATABASES = {
         "PASSWORD": os.environ.get('DB_PASSWORD', 'bincompasscode'),
         "HOST": os.environ.get('DB_HOST', '127.0.0.1'),
         "PORT": os.environ.get('DB_PORT', '3306'),
+        "OPTIONS": {
+            "ssl": {
+                "ssl-mode": "REQUIRED"
+            }
+        }
     }
 }
 

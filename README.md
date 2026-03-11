@@ -183,3 +183,7 @@ localhost:8000
 * MySQL
 * HTML / CSS
 
+#Access the public link here 
+```bash
+https://bincom-inec-test.onrender.com
+```

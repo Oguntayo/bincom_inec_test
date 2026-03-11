@@ -104,7 +104,7 @@ mysql -u root -p bincom_test < bincom_test.sql
 ```
 ---
 
-# 7. Fix Party Abbreviation Issue
+# 7. Fixing Party Abbreviation Issue
 
 The database schema defines:
 

@@ -1,0 +1,9 @@
+<nav>
+    <a href="/" class="logo">BINCOM<span>.</span></a>
+    
+    <div class="nav-links">
+        <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Polling Unit Results</a>
+        <a href="/lga-results/" class="nav-link {% if '/lga-results/' in request.path %}active{% endif %}">LGA Results</a>
+        <a href="/add-results/" class="nav-link {% if '/add-results/' in request.path %}active{% endif %}">Add Results</a>
+    </div>
+</nav>

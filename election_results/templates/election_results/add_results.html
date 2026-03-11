@@ -1,0 +1,80 @@
+{% extends "base/main.html" %}
+
+{% block content %}
+
+<div class="page-header" style="text-align: center; border: none; padding-left: 0; margin-bottom: 48px;">
+    <h2>Election Result Entry</h2>
+    <p class="subtitle">Enter and certify polling unit results for official record.</p>
+</div>
+
+<div class="card" style="max-width: 800px; margin: 0 auto; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <div class="card-body" style="padding: 48px;">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-section" style="margin-bottom: 48px; border-bottom: 1px solid #f1f5f9; padding-bottom: 32px;">
+                <label style="display: block; margin-bottom: 12px; font-weight: 700; color: #334155; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Polling Unit Information
+                </label>
+                <div class="form-group" style="max-width: 100%;">
+                    <div class="custom-select-wrapper" style="background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <select name="polling_unit" id="polling_unit" required style="display: none;">
+                            <option value="">Select the target polling unit...</option>
+                            {% for pu in polling_units %}
+                                <option value="{{ pu.uniqueid }}">
+                                    {{ pu.polling_unit_name }} (ID: {{ pu.uniqueid }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="custom-select">
+                            <div class="custom-select-trigger" style="height: 52px; padding: 0 20px;">
+                                <span>Select the target polling unit...</span>
+                            </div>
+                            <div class="custom-options" style="border-radius: 8px;">
+                                <div class="custom-option" data-value="">Select the target polling unit...</div>
+                                {% for pu in polling_units %}
+                                    <div class="custom-option" data-value="{{ pu.uniqueid }}">
+                                        {{ pu.polling_unit_name }} (ID: {{ pu.uniqueid }})
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" style="margin-bottom: 48px;">
+                <label style="display: block; margin-bottom: 24px; font-weight: 700; color: #334155; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Party Score Entry
+                </label>
+                
+                <div class="results-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+                    {% for party in parties %}
+                        <div class="party-input-card">
+                            <span class="party-badge">{{ party.partyid }}</span>
+                            <div style="flex: 1; margin-left: 16px;">
+                                <input type="number" name="{{ party.partyid }}" placeholder="Enter score" min="0" required 
+                                       style="width: 100%; border: 1px solid #e2e8f0; border-radius: 4px; padding: 10px 12px; font-size: 1rem; text-align: right; background: #fff;">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; border-radius: 8px; padding: 24px; border: 1px solid #e2e8f0; margin-bottom: 32px;">
+                <p style="font-size: 0.875rem; color: #64748b; line-height: 1.5; margin: 0;">
+                    <strong>Certification:</strong> By submitting this form, you verify that the data entered above is an accurate representation of the official results recorded at the polling unit.
+                </p>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary" style="height: 52px; padding: 0 40px; font-size: 1rem; font-weight: 600; border-radius: 6px;">
+                    Submit Official Results
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

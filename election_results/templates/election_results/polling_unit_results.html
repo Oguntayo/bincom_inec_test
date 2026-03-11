@@ -1,0 +1,78 @@
+{% extends "base/main.html" %}
+
+{% block content %}
+
+<div class="page-header" style="text-align: center; border: none; padding-left: 0; margin-bottom: 20px;">
+    <h2>Polling Unit Results</h2>
+    <p class="subtitle">Search and view election results for units nationwide.</p>
+</div>
+
+<div class="search-container">
+    <form method="GET" class="twitter-search-box">
+        <div class="custom-select-wrapper">
+            <select name="polling_unit" id="polling_unit" style="display: none;">
+                <option value="">Search Polling Unit...</option>
+                {% for pu in polling_units %}
+                <option value="{{ pu.uniqueid }}" {% if pu.uniqueid|slugify == selected_pu|slugify %}selected{% endif %}>
+                    {% if pu.polling_unit_name != "" %}
+                    {{ pu.polling_unit_name }}
+                    {% else %}
+                    (ID: {{ pu.uniqueid }})
+                    {% endif %}
+                </option>
+                {% endfor %}
+            </select>
+            <div class="custom-select">
+                <div class="custom-select-trigger">
+                    <span>
+                        {% if selected_pu %}
+                        {% for pu in polling_units %}
+                        {% if pu.uniqueid|slugify == selected_pu|slugify %}
+                        {% if pu.polling_unit_name != "" %}{{ pu.polling_unit_name }}{% else %}(ID: {{ pu.uniqueid }}){% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        Search Polling Unit...
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="custom-options">
+                    <div class="custom-option" data-value="">Search Polling Unit...</div>
+                    {% for pu in polling_units %}
+                    <div class="custom-option {% if pu.uniqueid|slugify == selected_pu|slugify %}selected{% endif %}"
+                        data-value="{{ pu.uniqueid }}">
+                        {% if pu.polling_unit_name != "" %}{{ pu.polling_unit_name }}{% else %}(ID: {{ pu.uniqueid }}){% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn-search">Search</button>
+    </form>
+</div>
+
+<div class="card" style="margin-bottom: 24px;">
+    <div class="card-header">
+        <label>Certified Result Breakdown</label>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Political Party</th>
+                    <th>Official Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in results %}
+                <tr>
+                    <td><span class="party-badge">{{ r.party }}</span></td>
+                    <td class="score-text">{{ r.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

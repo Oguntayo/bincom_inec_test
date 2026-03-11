@@ -1,0 +1,72 @@
+{% extends "base/main.html" %}
+
+{% block content %}
+
+<div class="page-header" style="text-align: center; border: none; padding-left: 0; margin-bottom: 20px;">
+    <h2>LGA Results Aggregation</h2>
+    <p class="subtitle">Search and view aggregated party scores for Local Government Areas.</p>
+</div>
+
+<div class="search-container">
+    <form method="GET" class="twitter-search-box">
+        <div class="custom-select-wrapper">
+            <select name="lga" id="lga" style="display: none;">
+                <option value="">Search LGA...</option>
+                {% for lga in lgas %}
+                <option value="{{ lga.lga_id }}" {% if lga.lga_id|slugify == selected_lga|slugify %}selected{% endif %}>
+                    {{ lga.lga_name }}
+                </option>
+                {% endfor %}
+            </select>
+            <div class="custom-select">
+                <div class="custom-select-trigger">
+                    <span>
+                        {% if selected_lga %}
+                        {% for lga in lgas %}
+                        {% if lga.lga_id|slugify == selected_lga|slugify %}{{ lga.lga_name }}{% endif %}
+                        {% endfor %}
+                        {% else %}
+                        Search LGA...
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="custom-options">
+                    <div class="custom-option" data-value="">Search LGA...</div>
+                    {% for lga in lgas %}
+                    <div class="custom-option {% if lga.lga_id|slugify == selected_lga|slugify %}selected{% endif %}"
+                        data-value="{{ lga.lga_id }}">
+                        {{ lga.lga_name }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn-search">Search</button>
+    </form>
+</div>
+
+<div class="card" style="margin-bottom: 24px;">
+    <div class="card-header">
+        <label>Aggregated Vote Count (Summed)</label>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Political Party</th>
+                    <th>Total Summed Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in results %}
+                <tr>
+                    <td><span class="party-badge">{{ r.party }}</span></td>
+                    <td class="score-text">{{ r.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
